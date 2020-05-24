@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./header";
-import { Container } from "theme-ui";
+import { Container, Box } from "theme-ui";
 
 const Layout = ({ children }) => {
   return (

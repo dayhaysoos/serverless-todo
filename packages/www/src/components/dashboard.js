@@ -1,6 +1,6 @@
 import React, { useRef, useContext, useReducer } from "react";
 import Layout from "./layout";
-import { Flex, Label, Input, Button, Checkbox } from "theme-ui";
+import { Flex, Label, Input, Button, Checkbox, Box } from "theme-ui";
 import { IdentityContext } from "../context/identity-context";
 
 const todosReducer = (state, action) => {
@@ -24,28 +24,30 @@ const Dashbaord = () => {
 
   return (
     <Layout>
-      <Flex
-        as={"form"}
-        onSubmit={(e) => {
-          e.preventDefault();
-          dispatch({ type: "addTodo", payload: inputRef.current.value });
-          inputRef.current.value = "";
-        }}
-      >
-        <Label>
-          Add ToDo
-          <Input ref={inputRef} />
-        </Label>
-        <Button>Submit</Button>
-      </Flex>
-      <Flex sx={{ flexDirection: "column" }}>
-        {todos.map((todo, i) => (
-          <Flex as={"li"} key={i}>
-            <Checkbox checked={todo.done} />
-            <span>{todo.value}</span>
-          </Flex>
-        ))}
-      </Flex>
+      <Box padding={3}>
+        <Flex
+          as={"form"}
+          onSubmit={(e) => {
+            e.preventDefault();
+            dispatch({ type: "addTodo", payload: inputRef.current.value });
+            inputRef.current.value = "";
+          }}
+        >
+          <Label>
+            Add ToDo
+            <Input ref={inputRef} />
+          </Label>
+          <Button>Submit</Button>
+        </Flex>
+        <Flex sx={{ flexDirection: "column" }}>
+          {todos.map((todo, i) => (
+            <Flex as={"li"} key={i}>
+              <Checkbox checked={todo.done} />
+              <span>{todo.value}</span>
+            </Flex>
+          ))}
+        </Flex>
+      </Box>
     </Layout>
   );
 };
