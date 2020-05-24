@@ -1,8 +1,24 @@
-import React from "react";
-import { Router, Link } from "@reach/router";
-import netlifyIdentity from "netlify-identity-widget";
+import React, { useContext } from "react";
+import { Router } from "@reach/router";
+import { IdentityContext } from "../context/identity-context";
+import Layout from "../components/layout";
 
-let Dash = () => {
-  const user = netlifyIdentity.currentUser();
-  return <div>Dash hasUser: {user && user.user_metadata.full_name}</div>;
+const Dash = () => {
+  const { user } = useContext(IdentityContext);
+
+  return (
+    <div sx={{ color: "white" }}>
+      User: {user && user.user_metadata.full_name}
+    </div>
+  );
+};
+
+export default (props) => {
+  return (
+    <Layout>
+      <Router>
+        <Dash path={"/app"} />
+      </Router>
+    </Layout>
+  );
 };
