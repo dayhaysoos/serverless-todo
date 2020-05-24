@@ -1,24 +1,42 @@
 import React, { useContext } from "react";
-import { Router } from "@reach/router";
+import { Router, Link } from "@reach/router";
+import { Container, Flex, Heading, Button, NavLink } from "theme-ui";
 import { IdentityContext } from "../context/identity-context";
-import Layout from "../components/layout";
+import Dash from "../components/dashboard";
 
-const Dash = () => {
-  const { user } = useContext(IdentityContext);
+let DashLoggedOut = (props) => {
+  const { user, identity: netlifyIdentity } = useContext(IdentityContext);
 
   return (
-    <div sx={{ color: "white" }}>
-      User: {user && user.user_metadata.full_name}
-    </div>
+    <Container>
+      <Flex sx={{ flexDirection: "column", padding: 3 }}>
+        <Heading as="h1">Get Stuff Done</Heading>
+        <Button
+          sx={{ marginTop: 2 }}
+          onClick={() => {
+            netlifyIdentity.open();
+          }}
+        >
+          Log In
+        </Button>
+      </Flex>
+    </Container>
   );
 };
 
 export default (props) => {
-  return (
-    <Layout>
+  const { user } = useContext(IdentityContext);
+
+  if (!user) {
+    return (
       <Router>
-        <Dash path={"/app"} />
+        <DashLoggedOut path="/app" />
       </Router>
-    </Layout>
+    );
+  }
+  return (
+    <Router>
+      <Dash path="/app" />
+    </Router>
   );
 };
