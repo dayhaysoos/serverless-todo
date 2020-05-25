@@ -2,6 +2,34 @@ import React, { useRef, useContext, useReducer } from "react";
 import Layout from "./layout";
 import { Flex, Label, Input, Button, Checkbox, Box } from "theme-ui";
 import { IdentityContext } from "../context/identity-context";
+import { gql, useMutation, useQuery } from "@apollo/client";
+
+const ADD_TODO = gql`
+  mutation AddTodo($type: String!) {
+    addTodo(text: "hi") {
+      id
+    }
+  }
+`;
+
+const UPDATE_TODO_DONE = gql`
+  mutation UpdateTodoDone($id: ID!) {
+    addTodo(text: "hi") {
+      text
+      done
+    }
+  }
+`;
+
+const GET_TODOS = gql`
+  query GetTodos {
+    todos {
+      id
+      text
+      done
+    }
+  }
+`;
 
 const todosReducer = (state, action) => {
   switch (action.type) {
@@ -19,8 +47,10 @@ const todosReducer = (state, action) => {
 
 const Dashbaord = () => {
   const { user, identity: netlifyIdentity } = useContext(IdentityContext);
-  const [todos, dispatch] = useReducer(todosReducer, []);
+  const [addTodo] = useMutation(ADD_TODO);
+  const [updateTodoDone] = useMutation(ADD_TODO);
   const inputRef = useRef();
+  const { loading, error, data } = useQuery(GET_TODOS);
 
   return (
     <Layout>
@@ -29,7 +59,7 @@ const Dashbaord = () => {
           as={"form"}
           onSubmit={(e) => {
             e.preventDefault();
-            dispatch({ type: "addTodo", payload: inputRef.current.value });
+            addTodo({ variables: { text: inputRef.current.value } });
             inputRef.current.value = "";
           }}
         >
@@ -40,12 +70,22 @@ const Dashbaord = () => {
           <Button>Submit</Button>
         </Flex>
         <Flex sx={{ flexDirection: "column" }}>
-          {todos.map((todo, i) => (
-            <Flex as={"li"} key={i}>
-              <Checkbox checked={todo.done} />
-              <span>{todo.value}</span>
-            </Flex>
-          ))}
+          {loading ? <div>loading ...</div> : null}
+          {error ? <div>{error.message}</div> : null}
+          {!loading && !error && (
+            <ul sx={{ listStyleType: "none" }}>
+              {data.map((todo) => (
+                <Flex
+                  as={"li"}
+                  key={todo.id}
+                  onClick={updateTodoDone({ variables: { id: todo.id } })}
+                >
+                  <Checkbox checked={todo.done} />
+                  <span>{todo.value}</span>
+                </Flex>
+              ))}
+            </ul>
+          )}
         </Flex>
       </Box>
     </Layout>
