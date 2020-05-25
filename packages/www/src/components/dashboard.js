@@ -6,7 +6,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 
 const ADD_TODO = gql`
   mutation AddTodo($text: String!) {
-    addTodo(text: "hi") {
+    addTodo(text: $text) {
       id
     }
   }
@@ -14,7 +14,7 @@ const ADD_TODO = gql`
 
 const UPDATE_TODO_DONE = gql`
   mutation UpdateTodoDone($id: ID!) {
-    addTodo(text: "hi") {
+    addTodo(id: $id) {
       text
       done
     }
