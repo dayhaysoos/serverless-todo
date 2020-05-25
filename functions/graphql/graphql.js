@@ -17,6 +17,8 @@ const typeDefs = gql`
   }
 `;
 
+const todos = {};
+
 const resolvers = {
   Query: {
     todos: () => {
