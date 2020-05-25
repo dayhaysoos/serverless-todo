@@ -36,12 +36,6 @@ const resolvers = {
   },
 };
 
-const resolvers = {
-  Query: {
-    hello: () => "Hello world",
-  },
-};
-
 const server = new ApolloServer({
   typeDefs,
   resolvers,
