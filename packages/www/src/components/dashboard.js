@@ -5,7 +5,7 @@ import { IdentityContext } from "../context/identity-context";
 import { gql, useMutation, useQuery } from "@apollo/client";
 
 const ADD_TODO = gql`
-  mutation AddTodo($type: String!) {
+  mutation AddTodo($text: String!) {
     addTodo(text: "hi") {
       id
     }
@@ -74,7 +74,7 @@ const Dashbaord = () => {
           {error ? <div>{error.message}</div> : null}
           {!loading && !error && (
             <ul sx={{ listStyleType: "none" }}>
-              {data.map((todo) => (
+              {data.todos.map((todo) => (
                 <Flex
                   as={"li"}
                   key={todo.id}
