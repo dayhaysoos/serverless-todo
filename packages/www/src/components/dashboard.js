@@ -47,41 +47,48 @@ const todosReducer = (state, action) => {
 
 const Dashbaord = () => {
   const { user, identity: netlifyIdentity } = useContext(IdentityContext);
-  const [addTodo] = useMutation(ADD_TODO);
-  const [updateTodoDone] = useMutation(ADD_TODO);
+  const [todos, dispatch] = useReducer(todosReducer, []);
   const inputRef = useRef();
-  const { loading, error, data } = useQuery(GET_TODOS);
+  const [addTodo] = useMutation(ADD_TODO);
+  const [updateTodoDone] = useMutation(UPDATE_TODO_DONE);
+  const { loading, error, data, refetch } = useQuery(GET_TODOS);
 
   return (
     <Layout>
       <Box padding={3}>
         <Flex
-          as={"form"}
-          onSubmit={(e) => {
+          as="form"
+          onSubmit={async (e) => {
             e.preventDefault();
-            addTodo({ variables: { text: inputRef.current.value } });
+            await addTodo({ variables: { text: inputRef.current.value } });
             inputRef.current.value = "";
+            await refetch();
           }}
         >
-          <Label>
-            Add ToDo
-            <Input ref={inputRef} />
+          <Label sx={{ display: "flex" }}>
+            <span>Add&nbsp;Todo</span>
+            <Input ref={inputRef} sx={{ marginLeft: 1 }} />
           </Label>
-          <Button>Submit</Button>
+          <Button sx={{ marginLeft: 1 }}>Submit</Button>
         </Flex>
         <Flex sx={{ flexDirection: "column" }}>
-          {loading ? <div>loading ...</div> : null}
+          {loading ? <div>loading...</div> : null}
           {error ? <div>{error.message}</div> : null}
           {!loading && !error && (
             <ul sx={{ listStyleType: "none" }}>
               {data.todos.map((todo) => (
                 <Flex
-                  as={"li"}
                   key={todo.id}
-                  onClick={updateTodoDone({ variables: { id: todo.id } })}
+                  as="li"
+                  onClick={async () => {
+                    console.log("updateTodoDone");
+                    await updateTodoDone({ variables: { id: todo.id } });
+                    console.log("refetching");
+                    await refetch();
+                  }}
                 >
-                  <Checkbox checked={todo.done} />
-                  <span>{todo.value}</span>
+                  <Checkbox checked={todo.done} readOnly />
+                  <span>{todo.text}</span>
                 </Flex>
               ))}
             </ul>
