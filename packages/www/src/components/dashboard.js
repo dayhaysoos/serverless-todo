@@ -14,7 +14,7 @@ const ADD_TODO = gql`
 
 const UPDATE_TODO_DONE = gql`
   mutation UpdateTodoDone($id: ID!) {
-    addTodo(id: $id) {
+    updateTodoDone(id: $id) {
       text
       done
     }
@@ -34,7 +34,7 @@ const GET_TODOS = gql`
 const todosReducer = (state, action) => {
   switch (action.type) {
     case "addTodo":
-      return [...state, { done: false, value: action.payload }];
+      return [{ done: false, value: action.payload }, ...state];
     case "toggleTodoDone":
       const newState = [...state];
       newState[action.payload] = {
