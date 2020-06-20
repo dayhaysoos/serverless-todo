@@ -25,7 +25,7 @@ async function run() {
   //     },
   //   },
   // };
-
+  // await docClient.put(params).promise();
   // const result = await docClient.put(params).promise();
   // console.log("result", result);
   // const params = {
@@ -43,7 +43,6 @@ async function run() {
   //     ":newdone": true,
   //   },
   // };
-
   // const result = await docClient.update(params).promise();
 
   const params = {
@@ -54,7 +53,6 @@ async function run() {
       ":todokey": "todo#",
     },
   };
-
   const result = await docClient.query(params).promise();
   console.log(result);
 }
