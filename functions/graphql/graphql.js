@@ -86,8 +86,6 @@ const resolvers = {
       if (!user) {
         throw new Error("Must be authenticated to insert todos");
       }
-      const result = await docClient.put(params).promise();
-      console.log("result", result);
       const params = {
         TableName: table,
         Key: {
