@@ -40,7 +40,7 @@ const resolvers = {
           TableName: table,
           KeyConditionExpression: "pk = :userid and begins_with(sk, :todokey)",
           ExpressionAttributeValues: {
-            ":userid": `user#1`,
+            ":userid": `user#${user}`,
             ":todokey": "todo#",
           },
         };
