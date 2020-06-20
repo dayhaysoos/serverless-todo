@@ -12,6 +12,7 @@
     "@apollo/client": "^3.0.0-beta.50",
     "@theme-ui/presets": "^0.3.0",
     "apollo-link-context": "^1.0.20",
+    "aws-sdk": "^2.701.0",
     "dotenv": "^8.2.0",
     "faunadb": "^2.14.1",
     "gatsby": "^2.22.9",
@@ -19,6 +20,7 @@
     "netlify-identity-widget": "^1.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "theme-ui": "^0.3.1"
+    "theme-ui": "^0.3.1",
+    "uuid": "^8.1.0"
   }
 }
