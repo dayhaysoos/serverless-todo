@@ -6,18 +6,19 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: us-east-1
-  iamRoleStatements: # permissions for all functions
+  iamRoleStatements: # permissions for all of your functions can be set here
     - Effect: Allow
-      Action: # gives permission to DynamoDB tables
+      Action: # Gives permission to DynamoDB tables in a specific region
         - dynamodb:DescribeTable
         - dynamodb:Query
+        # - dynamodb:Scan # Scans are bad, create indexes instead
         - dynamodb:BatchGetItem
         - dynamodb:BatchWriteItem
         - dynamodb:GetItem
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-  Resource: "arn:aws:dynamodb:us-east-1:*:table/todos"
+      Resource: "arn:aws:dynamodb:us-east-1:*:table/todos"
 functions:
   graphql:
     handler: handler.graphql
