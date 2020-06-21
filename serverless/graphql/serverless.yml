@@ -27,5 +27,4 @@ functions:
       - http:
           path: /graphql
           method: post
-          authorizer: auth
           cors: true
