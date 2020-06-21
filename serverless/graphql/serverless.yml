@@ -1,6 +1,6 @@
 service: serverless-todos
 app: serverless-todos-app
-org: nickserverlesstodoaws
+org: dayhaysoos
 
 provider:
   name: aws
@@ -24,7 +24,7 @@ functions:
     handler: handler.graphql
     description: The core GraphQL API for todos
     events:
-      - httpApiId:
+      - httpApi:
           path: /graphql
           method: post
           cors: true
