@@ -1,0 +1,29 @@
+service: serverless-todos
+app: serverless-todos-app
+org: nickserverlesstodoaws
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  iamRoleStatements: # permissions for all functions
+    - Effect: Allow
+      Action: # gives permission to DynamoDB tables
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:BatchGetItem
+        - dynamodb:BatchWriteItem
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+  Resource: "arn:aws:dynamodb:us-east-1:*:table/todos"
+functions:
+  graphql:
+    handler: handler.graphql
+    description: The core GraphQL API for todos
+    events:
+      - httpApi:
+        path: /graphql
+        method: post
+        cors: true
