@@ -135,7 +135,7 @@ const server = new ApolloServer({
   introspection: true,
 });
 
-exports.handler = server.createHandler({
+module.exports = server.createHandler({
   cors: {
     origin: "*",
     credentials: true,
