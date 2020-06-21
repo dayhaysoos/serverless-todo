@@ -10,7 +10,6 @@ AWS.config.update({
 });
 
 const table = "todos";
-
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 // Construct a schema, using GraphQL schema language
@@ -59,7 +58,6 @@ const resolvers = {
       if (!user) {
         throw new Error("Must be authenticated to insert todos");
       }
-
       const todoUuid = uuid();
       const params = {
         TableName: table,
@@ -75,7 +73,6 @@ const resolvers = {
         },
       };
       await docClient.put(params).promise();
-
       return {
         id: todoUuid,
         done: false,
@@ -102,11 +99,9 @@ const resolvers = {
         },
         ReturnValues: "ALL_NEW",
       };
-
       const result = await docClient.update(params).promise();
 
       const { pk, sk, data } = result.Attributes;
-
       return {
         id: sk.replace("todo#", ""),
         text: data.text,
@@ -119,9 +114,9 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ context }) => {
-    if (context.clientContext.user) {
-      return { user: context.clientContext.user.sub };
+  context: ({ event }) => {
+    if (event.requestContext.authorizer.principalId) {
+      return { user: event.requestContext.authorizer.principalId };
     } else {
       return {};
     }
