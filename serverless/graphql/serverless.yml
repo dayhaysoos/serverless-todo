@@ -25,6 +25,6 @@ functions:
     description: The core GraphQL API for todos
     events:
       - httpApi:
-          path: /graphql
+          path: graphql
           method: post
           cors: true
