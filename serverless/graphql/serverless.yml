@@ -24,7 +24,8 @@ functions:
     handler: handler.graphql
     description: The core GraphQL API for todos
     events:
-      - httpApi:
-        path: /graphql
-        method: post
-        cors: true
+      - http:
+          path: /graphql
+          method: post
+          authorizer: auth
+          cors: true
